@@ -1,5 +1,12 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const v1 = express();
+
+v1.use(bodyParser.json());
+
+const auth = require('./auth');
+
+v1.use('/auth', auth);
 
 v1.get('/', (req, res) => {
   res.json({
