@@ -1,35 +1,32 @@
 const express = require('express');
-const mongoose = require('mongoose');
+const { handleError } = require('../../../services/utils');
 const { validateEmail } = require('../../../middlewares/validators');
 const User = require('../../../models/User');
 const app = express();
 
-app.post('/login', [validateEmail], (req, res) => {
+app.post('/signup', [validateEmail], async (req, res) => {
   const body = req.body;
-
+  
   const user = new User({
     email: body.email,
-    password: body.password,
-    active: true,
-    role: 'asd'
+    password: body.password
   });
+  
+  await user.save()
+    .then(userDb => {
 
-  user.save((error, userDb) => {
+      res.json({
+        ok: true,
+        message: 'Success',
+        data: userDb
+      });
 
-    if (error) {
-      return res.json({
-        ok: false,
-        message: 'Error'
-      })
-    }
+    })
+    .catch(error => handleError(res, undefined, error.errmsg));
 
-    res.json({
-      ok: true,
-      message: '',
-      data: userDb
-    });
+});
 
-  });
+app.post('/login', [validateEmail], (req, res) => {
 
 });
 

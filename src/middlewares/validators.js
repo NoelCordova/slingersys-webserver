@@ -1,3 +1,4 @@
+const { handleError } = require('../services/utils');
 const Joi = require('joi');
 
 const validateEmail = (req, res, next) => {
@@ -11,14 +12,7 @@ const validateEmail = (req, res, next) => {
 
   const validResult = Joi.validate(body, validationSchema);
 
-  if (validResult.error !== null) {
-    return res.status(400).json({
-      message: 'The login info is wrong',
-      err: validResult
-    });
-  }
-
-  next();
+  validResult.error !== null ? handleError(res, 400, validResult.error.details[0].message) : next();
 
 }
 

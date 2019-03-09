@@ -1,3 +1,4 @@
+const { KEYS } = require('../services/utils');
 const mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
@@ -25,7 +26,8 @@ let UserSchema = new Schema({
   },
   role: {
     type: String,
-    required: true
+    required: true,
+    default: KEYS.ROLE_USER
   }
 }, { collection: 'users', versionKey: false });
 
