@@ -1,5 +1,13 @@
 # sllingersys - web server
 
+## To do...
+
+* [x] Login and signup
+* [x] Deployment
+* [ ] DB on server
+* [ ] Token validation
+* [ ] Protected routes
+* [ ] ???
 
 ## Response structure
 
