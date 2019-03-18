@@ -1,4 +1,3 @@
-
 const handleError = (res, code, message) => {
   code = code !== undefined ? code : 500;
 

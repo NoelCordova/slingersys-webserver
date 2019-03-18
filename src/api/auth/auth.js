@@ -1,7 +1,7 @@
 const express = require('express');
-const { handleError } = require('../../../services/utils');
-const { validateEmail } = require('../../../middlewares/validators');
-const User = require('../../../models/User');
+const { handleError } = require('../../services/utils');
+const { validateEmail } = require('../../middlewares/validators');
+const User = require('../../models/User');
 const app = express();
 
 app.post('/signup', [validateEmail], async (req, res) => {
