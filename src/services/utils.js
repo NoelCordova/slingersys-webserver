@@ -1,5 +1,5 @@
 const handleError = (res, code, message) => {
-  code = code !== undefined ? code : 500;
+  code !== undefined ? code : code = 500;
 
   res.status(code).json({
     ok: false,

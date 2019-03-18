@@ -1,7 +1,7 @@
 const { handleError } = require('../services/utils');
 const Joi = require('joi');
 
-const validateEmail = (req, res, next) => {
+const validateCredentials = (req, res, next) => {
 
   const validationSchema = Joi.object().keys({
     email: Joi.string().regex(/^[a-zA-Z0-9_.-]*@(gmail|hotmail)(.com)$/),
@@ -17,4 +17,4 @@ const validateEmail = (req, res, next) => {
 }
 
 
-module.exports = { validateEmail }
+module.exports = { validateCredentials }
