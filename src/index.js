@@ -12,7 +12,9 @@ require('./services/dbConnection');
 app.use(bodyParser.json());
 
 // Volleyball middleware
-app.use(volleyball);
+if (process.env.NODE_ENV !== 'production') {
+  app.use(volleyball);
+}
 
 // Application routes
 app.use(routes)
