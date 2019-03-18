@@ -2,9 +2,9 @@
   "name": "slingersys-webserver",
   "version": "0.0.1",
   "description": "Web server para proyecto personal",
-  "main": "app.js",
+  "main": "src/index.js",
   "scripts": {
-    "start": "node src/",
+    "start": "node src/index.js",
     "dev": "nodemon src/"
   },
   "engines": {
