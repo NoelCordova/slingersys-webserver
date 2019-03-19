@@ -7,7 +7,8 @@
 * [ ] DB on server
 * [ ] Token validation
 * [ ] Protected routes
-* [ ] ???
+* [ ] Login only with token
+* [ ] Trello
 
 ## Response structure
 
@@ -40,3 +41,13 @@
   message: "Error"
 }
 ```
+
+## .env file structure
+
+**DB_NAME**: Name of the local database
+
+**CRYPT_ROUNDS**: Variable for bcrypt
+
+**TOKEN_SECRET_KEY**: JWT secret sign key
+
+**TOKEN_EXPIRES**: JWT expiration time

@@ -6,7 +6,7 @@ const routes = require('./routes');
 const bodyParser = require('body-parser');
 const app = express();
 
-// require('./services/dbConnection');
+require('./services/dbConnection');
 
 // JSON parser
 app.use(bodyParser.json());
