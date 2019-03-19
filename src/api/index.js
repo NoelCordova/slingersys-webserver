@@ -1,6 +1,7 @@
 const express = require('express');
 const api = express();
 
+// Routes
 const auth = require('./auth/auth');
 
 api.use('/auth', auth);
@@ -10,5 +11,6 @@ api.get('/', (req, res) => {
     url: '*/api'
   });
 });
+
 
 module.exports = api;

@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const app = express();
 
-app.post('/signup', [validateCredentials], async (req, res) => {
+app.post('/signup', [validateCredentials], (req, res) => {
   const body = req.body;
 
   const user = new User({
@@ -14,7 +14,7 @@ app.post('/signup', [validateCredentials], async (req, res) => {
     password: bcrypt.hashSync(body.password, parseInt(process.env.CRYPT_ROUNDS))
   });
   
-  await user.save()
+  user.save()
     .then((userDb) => {
 
       res.json({

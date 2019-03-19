@@ -1,4 +1,5 @@
 require('dotenv').config();
+
 const { PORT } = require('./config');
 const express = require('express');
 const volleyball = require('volleyball');
@@ -17,6 +18,6 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // Application routes
-app.use(routes)
+app.use(routes);
 
 app.listen(PORT, () => console.log('Server now running on port: ', PORT));
