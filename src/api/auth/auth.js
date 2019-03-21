@@ -1,22 +1,18 @@
 const express = require('express');
 const { handleError } = require('../../services/utils');
-const { validateCredentials } = require('../../middlewares/validators');
+const { validateCredentials, validateTokenSignup } = require('../../middlewares/validators');
 const User = require('../../models/User');
-const Config = require('../../models/Config');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const app = express();
 
-app.post('/signup', [validateCredentials], (req, res) => {
+app.post('/signup', [validateTokenSignup, validateCredentials], (req, res) => {
   const body = req.body;
 
   const user = new User({
     email: body.email,
     password: bcrypt.hashSync(body.password, parseInt(process.env.CRYPT_ROUNDS))
   });
-  
-  Config.findOne({ validSignupToken: 'meeh' })
-    .then(algo => console.log(algo));
 
   user.save()
     .then((userDb) => {

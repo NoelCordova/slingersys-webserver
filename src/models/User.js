@@ -1,4 +1,3 @@
-const { KEYS } = require('../services/utils');
 const mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
@@ -23,9 +22,9 @@ let UserSchema = new Schema({
   role: {
     type: String,
     required: true,
-    default: KEYS.ROLE_USER
+    default: process.env.ROLE_USER
   }
-}, { collection: KEYS.DB_USERS, versionKey: false });
+}, { collection: process.env.DB_USERS, versionKey: false });
 
 
 module.exports = mongoose.model('User', UserSchema);
