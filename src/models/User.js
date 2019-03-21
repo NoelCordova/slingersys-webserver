@@ -25,7 +25,7 @@ let UserSchema = new Schema({
     required: true,
     default: KEYS.ROLE_USER
   }
-}, { collection: 'users', versionKey: false });
+}, { collection: KEYS.DB_USERS, versionKey: false });
 
 
 module.exports = mongoose.model('User', UserSchema);

@@ -10,7 +10,9 @@ const handleError = (res, code, message) => {
 
 const KEYS = {
   ROLE_ADMIN: 'ROLE_ADMIN',
-  ROLE_USER: 'ROLE_USER'
+  ROLE_USER: 'ROLE_USER',
+  DB_USERS: 'users',
+  DB_CONFIG: 'config'
 };
 
 

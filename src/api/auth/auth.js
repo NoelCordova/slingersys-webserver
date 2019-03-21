@@ -2,6 +2,7 @@ const express = require('express');
 const { handleError } = require('../../services/utils');
 const { validateCredentials } = require('../../middlewares/validators');
 const User = require('../../models/User');
+const Config = require('../../models/Config');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const app = express();
@@ -14,6 +15,9 @@ app.post('/signup', [validateCredentials], (req, res) => {
     password: bcrypt.hashSync(body.password, parseInt(process.env.CRYPT_ROUNDS))
   });
   
+  Config.findOne({ validSignupToken: 'meeh' })
+    .then(algo => console.log(algo));
+
   user.save()
     .then((userDb) => {
 
