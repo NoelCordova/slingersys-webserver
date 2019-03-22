@@ -16,6 +16,7 @@ app.post('/signup', [validateTokenSignup, validateCredentials], (req, res) => {
 
   user.save()
     .then((userDb) => {
+      userDb.password = undefined;
 
       res.json({
         ok: true,
