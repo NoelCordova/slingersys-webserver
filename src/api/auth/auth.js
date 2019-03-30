@@ -1,8 +1,7 @@
 const express = require('express');
-const { handleError } = require('../../services/utils');
+const { handleError, encryptPassword, comparePassword } = require('../../services/utils');
 const { validateCredentials, validateTokenSignup } = require('../../middlewares/validators');
 const User = require('../../models/User');
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const app = express();
 
@@ -11,7 +10,7 @@ app.post('/signup', [validateTokenSignup, validateCredentials], (req, res) => {
 
   const user = new User({
     email: body.email,
-    password: bcrypt.hashSync(body.password, parseInt(process.env.CRYPT_ROUNDS))
+    password: encryptPassword(body.password)
   });
 
   user.save()
@@ -34,11 +33,12 @@ app.post('/login', [validateCredentials], (req, res) => {
     if (error) handleError(res, undefined, error);
     
     if (userDb === null) return handleError(res, 400, '[email] or password is incorrect');
-    if (!bcrypt.compareSync(body.password, userDb.password))
+    if (!comparePassword(body.password, userDb.password))
       return handleError(res, 400, 'email o [password] is incorrect');
 
     const payload = {
-      email: userDb.email
+      email: userDb.email,
+      role: userDb.role
     };
 
     const token = jwt.sign(payload, process.env.TOKEN_SECRET_KEY, { expiresIn: process.env.TOKEN_EXPIRES });
