@@ -3,6 +3,9 @@ const Config = require('../models/Config');
 const Joi = require('joi');
 const jwt = require('jsonwebtoken');
 
+/**
+ * Function that validates de credentials for login or signup
+ */
 const validateCredentials = (req, res, next) => {
   const body = req.body;
   const validationSchema = Joi.object().keys({
