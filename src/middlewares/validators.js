@@ -4,7 +4,7 @@ const Joi = require('joi');
 const jwt = require('jsonwebtoken');
 
 /**
- * Function that validates de credentials for login or signup
+ * Function that validates the credentials for login or signup
  */
 const validateCredentials = (req, res, next) => {
   const body = req.body;
@@ -18,6 +18,9 @@ const validateCredentials = (req, res, next) => {
   validResult.error !== null ? handleError(res, 400, validResult.error.details[0].message) : next();
 }
 
+/**
+ * Function that validates 
+ */
 const validateUserAdmin = (req, res, next) => {
   const body = req.body;
   const validationSchema = Joi.object().keys({
@@ -37,14 +40,20 @@ const validateUserAdmin = (req, res, next) => {
   } else next();
 }
 
+/**
+ * Function that validates the token in the database for signup permission
+ */
 const validateTokenSignup = (req, res, next) => {
   const body = req.body;
 
   Config.findOne({ validSignupToken: body.validSignupToken })
-    .then(data => data === null ? handleError(res, 400, 'El token de inicio de sesiòn no es valido') : next())
+    .then(data => data === null ? handleError(res, 400, 'El token de inicio de sesión no es valido') : next())
     .catch(error => handleError(res, undefined, error));
 }
 
+/**
+ * Function that validates the exp date of the session token
+ */
 const validateTokenExpiration = (req, res, next) => {
   const Authorization = req.get('Authorization');
 
@@ -57,6 +66,9 @@ const validateTokenExpiration = (req, res, next) => {
   });
 }
 
+/**
+ * Function that validates the admin role in the session token
+ */
 const validateTokenRole = (req, res, next) => {
   const Authorization = req.get('Authorization');
 
@@ -72,6 +84,9 @@ const validateTokenRole = (req, res, next) => {
   });
 }
 
+/**
+ * Function that validates the identity (email or username) in the session token
+ */
 const validateTokenIdentity = (req, res, next) => {
   const Authorization = req.get('Authorization');
   const email = req.params.email;
