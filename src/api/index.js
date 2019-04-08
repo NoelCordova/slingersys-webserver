@@ -1,18 +1,17 @@
-const express = require('express');
+const express = require("express");
 const api = express();
 
 // Routes
-const auth = require('./auth/auth');
-const users = require('./user/users');
+const auth = require("./auth/auth");
+const users = require("./user/users");
 
-api.use('/auth', auth);
-api.use('/users', users);
+api.use("/auth", auth);
+api.use("/users", users);
 
-api.get('/', (req, res) => {
+api.get("/", (req, res) => {
   res.json({
-    url: '*/api'
+    url: "*/api"
   });
 });
-
 
 module.exports = api;

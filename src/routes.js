@@ -1,20 +1,19 @@
-const express = require('express');
-const api = require('./api');
+const express = require("express");
+const api = require("./api");
 const routes = express();
 
-routes.use('/api', api);
+routes.use("/api", api);
 
-routes.get('/', (req, res) => {
+routes.get("/", (req, res) => {
   res.json({
-    url: '*/'
+    url: "*/"
   });
 });
 
-routes.all('/*', (req, res) => {
+routes.all("/*", (req, res) => {
   res.json({
-    url: 'Ruta inválida'
+    url: "Ruta inválida"
   });
 });
-
 
 module.exports = routes;
