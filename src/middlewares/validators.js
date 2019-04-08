@@ -3,6 +3,8 @@ const Config = require("../models/Config");
 const Joi = require("joi");
 const jwt = require("jsonwebtoken");
 
+const fileSrc = "src/middlewares/validators.js";
+
 /**
  * Function that validates the credentials for login or signup
  */
@@ -23,7 +25,7 @@ const validateCredentials = (req, res, next) => {
   );
 
   validResult.error !== null
-    ? handleError(res, 400, validResult.error.details[0].message)
+    ? handleError(res, 400, validResult.error.details[0].message, fileSrc, 28)
     : next();
 };
 
@@ -50,11 +52,22 @@ const validateUserAdmin = (req, res, next) => {
   );
 
   if (validResult.error !== null) {
-    console.log(validResult.error.details);
-
     if (validResult.error.details[0].path[0] === "role")
-      return handleError(res, 400, "El rol ingresado no es válido");
-    else return handleError(res, 400, validResult.error.details[0].message);
+      return handleError(
+        res,
+        400,
+        "El rol ingresado no es válido",
+        fileSrc,
+        56
+      );
+    else
+      return handleError(
+        res,
+        400,
+        validResult.error.details[0].message,
+        fileSrc,
+        64
+      );
   } else next();
 };
 
@@ -67,10 +80,16 @@ const validateTokenSignup = (req, res, next) => {
   Config.findOne({ validSignupToken: body.validSignupToken })
     .then(data =>
       data === null
-        ? handleError(res, 400, "El token de inicio de sesión no es valido")
+        ? handleError(
+            res,
+            400,
+            "El token de inicio de sesión no es valido",
+            fileSrc,
+            83
+          )
         : next()
     )
-    .catch(error => handleError(res, undefined, error));
+    .catch(error => handleError(res, undefined, error, fileSrc, 92));
 };
 
 /**
@@ -83,13 +102,15 @@ const validateTokenExpiration = (req, res, next) => {
     return handleError(
       res,
       401,
-      "No tienes autorización para acceder a esta ruta"
+      "No tienes autorización para acceder a esta ruta",
+      fileSrc,
+      103
     );
 
   const token = Authorization.split(" ")[1];
 
   jwt.verify(token, process.env.TOKEN_SECRET_KEY, (error, payload) => {
-    error ? handleError(res, 401, error.name) : next();
+    error ? handleError(res, 401, error.name, fileSrc, 113) : next();
   });
 };
 
@@ -103,7 +124,9 @@ const validateTokenRole = (req, res, next) => {
     return handleError(
       res,
       401,
-      "No tienes autorización para acceder a esta ruta"
+      "No tienes autorización para acceder a esta ruta",
+      fileSrc,
+      124
     );
 
   const token = Authorization.split(" ")[1];
@@ -115,7 +138,9 @@ const validateTokenRole = (req, res, next) => {
       ? handleError(
           res,
           401,
-          "No tienes autorización para acceder a esta ruta: [role]"
+          "No tienes autorización para acceder a esta ruta: [role]",
+          fileSrc,
+          138
         )
       : next();
   });
@@ -132,7 +157,9 @@ const validateTokenIdentity = (req, res, next) => {
     return handleError(
       res,
       401,
-      "No tienes autorización para acceder a esta ruta"
+      "No tienes autorización para acceder a esta ruta",
+      fileSrc,
+      157
     );
 
   const token = Authorization.split(" ")[1];
@@ -144,7 +171,9 @@ const validateTokenIdentity = (req, res, next) => {
       ? handleError(
           res,
           401,
-          "No tienes autorización para acceder a esta ruta: [email]"
+          "No tienes autorización para acceder a esta ruta: [email]",
+          fileSrc,
+          171
         )
       : next();
   });

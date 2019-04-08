@@ -8,6 +8,8 @@ const {
 const User = require("../../models/User");
 const app = express();
 
+const fileSrc = "src/api/user/users.js";
+
 app.get("/", [validateTokenExpiration, validateTokenRole], (req, res) => {
   let skip = req.query.skip;
   let limit = req.query.limit;
@@ -28,7 +30,7 @@ app.get("/", [validateTokenExpiration, validateTokenRole], (req, res) => {
         data: [...usersDb]
       });
     })
-    .catch(error => handleError(res, undefined, error.errmsg));
+    .catch(error => handleError(res, undefined, error.errmsg, fileSrc, 33));
 });
 
 app.get("/:email", [validateTokenExpiration, validateTokenRole], (req, res) => {
@@ -37,7 +39,7 @@ app.get("/:email", [validateTokenExpiration, validateTokenRole], (req, res) => {
   User.findOne({ email, active: true })
     .then(userDb => {
       if (userDb === null)
-        return handleError(res, 400, "Usuario no encontrado");
+        return handleError(res, 400, "Usuario no encontrado", fileSrc, 42);
 
       const data = userDb;
 
@@ -47,7 +49,7 @@ app.get("/:email", [validateTokenExpiration, validateTokenRole], (req, res) => {
         data
       });
     })
-    .catch(error => handleError(res, undefined, error.errmsg));
+    .catch(error => handleError(res, undefined, error.errmsg, fileSrc, 52));
 });
 
 const putMiddlewares = [
@@ -65,7 +67,7 @@ app.put("/:email", putMiddlewares, (req, res) => {
   User.findOneAndUpdate({ email, active: true }, body, { new: true })
     .then(userDb => {
       if (userDb === null)
-        return handleError(res, 400, "Usuario no encontrado");
+        return handleError(res, 400, "Usuario no encontrado", fileSrc, 70);
 
       const data = userDb;
 
@@ -75,7 +77,7 @@ app.put("/:email", putMiddlewares, (req, res) => {
         data
       });
     })
-    .catch(error => handleError(res, undefined, error.errmsg));
+    .catch(error => handleError(res, undefined, error.errmsg, fileSrc, 80));
 });
 
 const deleteMiddlewares = [validateTokenExpiration, validateTokenRole];
@@ -86,14 +88,14 @@ app.delete("/:email", deleteMiddlewares, (req, res) => {
   User.findOneAndUpdate({ email, active: true }, { active: false })
     .then(userDb => {
       if (userDb === null)
-        return handleError(res, 400, "Usuario no encontrado");
+        return handleError(res, 400, "Usuario no encontrado", fileSrc, 91);
 
       res.json({
         ok: true,
         message: "Succes"
       });
     })
-    .catch(error => handleError(res, undefined, error.errmsg));
+    .catch(error => handleError(res, undefined, error.errmsg, fileSrc, 98));
 });
 
 module.exports = app;

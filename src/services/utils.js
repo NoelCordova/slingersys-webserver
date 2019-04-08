@@ -1,13 +1,15 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const handleError = (res, code, message) => {
+const handleError = (res, code, message, fileSrc, lnCode) => {
   code !== undefined ? code : (code = 500);
 
   res.status(code).json({
     ok: false,
     code,
-    message
+    message,
+    fileSrc,
+    lnCode
   });
 };
 

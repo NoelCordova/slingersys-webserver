@@ -12,6 +12,8 @@ const {
 const User = require("../../models/User");
 const app = express();
 
+const fileSrc = "src/api/auth/auth.js";
+
 app.post("/signup", [validateTokenSignup, validateCredentials], (req, res) => {
   const body = req.body;
 
@@ -28,7 +30,7 @@ app.post("/signup", [validateTokenSignup, validateCredentials], (req, res) => {
         message: "Signup complete"
       });
     })
-    .catch(error => handleError(res, 400, error.errmsg));
+    .catch(error => handleError(res, 400, error.errmsg, fileSrc, 33));
 });
 
 app.post("/login", [validateCredentials], (req, res) => {
@@ -37,12 +39,24 @@ app.post("/login", [validateCredentials], (req, res) => {
   User.findOne({ email: body.email, active: true })
     .select({ email: 1, role: 1, password: 1 })
     .exec((error, userDb) => {
-      if (error) handleError(res, undefined, error);
+      if (error) handleError(res, undefined, error, fileSrc, 42);
 
       if (userDb === null)
-        return handleError(res, 400, "[email] or password is incorrect");
+        return handleError(
+          res,
+          400,
+          "[email] or password is incorrect",
+          fileSrc,
+          45
+        );
       if (!comparePassword(body.password, userDb.password))
-        return handleError(res, 400, "email o [password] is incorrect");
+        return handleError(
+          res,
+          400,
+          "email o [password] is incorrect",
+          fileSrc,
+          53
+        );
 
       const payload = {
         email: userDb.email,
