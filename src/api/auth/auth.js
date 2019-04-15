@@ -6,7 +6,8 @@ const {
   createJWT
 } = require("../../services/utils");
 const {
-  validateCredentials,
+  validateCredentialsSignup,
+  validateCredentialsLogin,
   validateTokenSignup
 } = require("../../middlewares/validators");
 const User = require("../../models/User");
@@ -14,30 +15,35 @@ const app = express();
 
 const fileSrc = "src/api/auth/auth.js";
 
-app.post("/signup", [validateTokenSignup, validateCredentials], (req, res) => {
-  const body = req.body;
+app.post(
+  "/signup",
+  [validateTokenSignup, validateCredentialsSignup],
+  (req, res) => {
+    const body = req.body;
 
-  const user = new User({
-    email: body.email,
-    password: encryptPassword(body.password)
-  });
+    const user = new User({
+      email: body.email,
+      username: body.username,
+      password: encryptPassword(body.password)
+    });
 
-  user
-    .save()
-    .then(() => {
-      res.json({
-        ok: true,
-        message: "Signup complete"
-      });
-    })
-    .catch(error => handleError(res, 400, error.errmsg, fileSrc, 33));
-});
+    user
+      .save()
+      .then(() => {
+        res.json({
+          ok: true,
+          message: "Signup complete"
+        });
+      })
+      .catch(error => handleError(res, 400, error.errmsg, fileSrc, 33));
+  }
+);
 
-app.post("/login", [validateCredentials], (req, res) => {
+app.post("/login", [validateCredentialsLogin], (req, res) => {
   const body = req.body;
 
   User.findOne({ email: body.email, active: true })
-    .select({ email: 1, role: 1, password: 1 })
+    .select({ username: 1, role: 1, password: 1 })
     .exec((error, userDb) => {
       if (error) handleError(res, undefined, error, fileSrc, 42);
 
@@ -58,8 +64,10 @@ app.post("/login", [validateCredentials], (req, res) => {
           53
         );
 
+      console.log(userDb);
+
       const payload = {
-        email: userDb.email,
+        username: userDb.username,
         role: userDb.role
       };
 

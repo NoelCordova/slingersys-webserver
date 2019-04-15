@@ -6,9 +6,36 @@ const jwt = require("jsonwebtoken");
 const fileSrc = "src/middlewares/validators.js";
 
 /**
- * Function that validates the credentials for login or signup
+ * Function that validates the credentials for signup
  */
-const validateCredentials = (req, res, next) => {
+const validateCredentialsSignup = (req, res, next) => {
+  const body = req.body;
+  const validationSchema = Joi.object().keys({
+    email: Joi.string()
+      .regex(/^[a-zA-Z0-9_.-]*@(gmail|hotmail)(.com)$/)
+      .required(),
+    username: Joi.string()
+      .regex(/^[a-zA-Z_]{8,16}/)
+      .required(),
+    password: Joi.string()
+      .regex(/^[a-zA-Z0-9_]{5,10}$/)
+      .required()
+  });
+
+  const validResult = Joi.validate(
+    { email: body.email, username: body.username, password: body.password },
+    validationSchema
+  );
+
+  validResult.error !== null
+    ? handleError(res, 400, validResult.error.details[0].message, fileSrc, 28)
+    : next();
+};
+
+/**
+ * Function that validates the credentials for login
+ */
+const validateCredentialsLogin = (req, res, next) => {
   const body = req.body;
   const validationSchema = Joi.object().keys({
     email: Joi.string()
@@ -32,11 +59,14 @@ const validateCredentials = (req, res, next) => {
 /**
  * Function that validates the body for a edit user as admin
  */
-const validateUserAdmin = (req, res, next) => {
+const validateUserInfoAsAdmin = (req, res, next) => {
   const body = req.body;
   const validationSchema = Joi.object().keys({
     email: Joi.string()
       .regex(/^[a-zA-Z0-9_.-]*@(gmail|hotmail)(.com)$/)
+      .required(),
+    username: Joi.string()
+      .regex(/^[a-zA-Z_]{8,16}/)
       .required(),
     password: Joi.string()
       .regex(/^[a-zA-Z0-9_]{5,10}$/)
@@ -47,7 +77,12 @@ const validateUserAdmin = (req, res, next) => {
   });
 
   const validResult = Joi.validate(
-    { email: body.email, password: body.password, role: body.role },
+    {
+      email: body.email,
+      username: body.username,
+      password: body.password,
+      role: body.role
+    },
     validationSchema
   );
 
@@ -180,8 +215,9 @@ const validateTokenIdentity = (req, res, next) => {
 };
 
 module.exports = {
-  validateCredentials,
-  validateUserAdmin,
+  validateCredentialsSignup,
+  validateCredentialsLogin,
+  validateUserInfoAsAdmin,
   validateTokenSignup,
   validateTokenExpiration,
   validateTokenRole,

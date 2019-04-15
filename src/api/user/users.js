@@ -3,7 +3,7 @@ const { handleError, encryptPassword } = require("../../services/utils");
 const {
   validateTokenExpiration,
   validateTokenRole,
-  validateUserAdmin
+  validateUserInfoAsAdmin
 } = require("../../middlewares/validators");
 const User = require("../../models/User");
 const app = express();
@@ -33,41 +33,45 @@ app.get("/", [validateTokenExpiration, validateTokenRole], (req, res) => {
     .catch(error => handleError(res, undefined, error.errmsg, fileSrc, 33));
 });
 
-app.get("/:email", [validateTokenExpiration, validateTokenRole], (req, res) => {
-  const email = req.params.email;
+app.get(
+  "/:username",
+  [validateTokenExpiration, validateTokenRole],
+  (req, res) => {
+    const username = req.params.username;
 
-  User.findOne({ email, active: true })
-    .then(userDb => {
-      if (userDb === null)
-        return handleError(res, 400, "Usuario no encontrado", fileSrc, 42);
+    User.findOne({ username, active: true })
+      .then(userDb => {
+        if (userDb === null)
+          return handleError(res, 400, "Usuario no encontrado", fileSrc, 45);
 
-      const data = userDb;
+        const data = userDb;
 
-      res.json({
-        ok: true,
-        message: "Success",
-        data
-      });
-    })
-    .catch(error => handleError(res, undefined, error.errmsg, fileSrc, 52));
-});
+        res.json({
+          ok: true,
+          message: "Success",
+          data
+        });
+      })
+      .catch(error => handleError(res, undefined, error.errmsg, fileSrc, 55));
+  }
+);
 
 const putMiddlewares = [
   validateTokenExpiration,
   validateTokenRole,
-  validateUserAdmin
+  validateUserInfoAsAdmin
 ];
 
-app.put("/:email", putMiddlewares, (req, res) => {
-  const email = req.params.email;
+app.put("/:username", putMiddlewares, (req, res) => {
+  const username = req.params.username;
   const body = req.body;
 
   body.password = encryptPassword(body.password);
 
-  User.findOneAndUpdate({ email, active: true }, body, { new: true })
+  User.findOneAndUpdate({ username, active: true }, body, { new: true })
     .then(userDb => {
       if (userDb === null)
-        return handleError(res, 400, "Usuario no encontrado", fileSrc, 70);
+        return handleError(res, 400, "Usuario no encontrado", fileSrc, 74);
 
       const data = userDb;
 
@@ -77,25 +81,25 @@ app.put("/:email", putMiddlewares, (req, res) => {
         data
       });
     })
-    .catch(error => handleError(res, undefined, error.errmsg, fileSrc, 80));
+    .catch(error => handleError(res, undefined, error.errmsg, fileSrc, 84));
 });
 
 const deleteMiddlewares = [validateTokenExpiration, validateTokenRole];
 
-app.delete("/:email", deleteMiddlewares, (req, res) => {
-  const email = req.params.email;
+app.delete("/:username", deleteMiddlewares, (req, res) => {
+  const username = req.params.username;
 
-  User.findOneAndUpdate({ email, active: true }, { active: false })
+  User.findOneAndUpdate({ username, active: true }, { active: false })
     .then(userDb => {
       if (userDb === null)
-        return handleError(res, 400, "Usuario no encontrado", fileSrc, 91);
+        return handleError(res, 400, "Usuario no encontrado", fileSrc, 95);
 
       res.json({
         ok: true,
-        message: "Succes"
+        message: "Success"
       });
     })
-    .catch(error => handleError(res, undefined, error.errmsg, fileSrc, 98));
+    .catch(error => handleError(res, undefined, error.errmsg, fileSrc, 102));
 });
 
 module.exports = app;
