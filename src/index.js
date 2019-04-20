@@ -1,8 +1,6 @@
 require("dotenv").config();
-
 const { PORT } = require("./config");
 const express = require("express");
-const volleyball = require("volleyball");
 const routes = require("./routes");
 const bodyParser = require("body-parser");
 const app = express();
@@ -14,6 +12,7 @@ app.use(bodyParser.json());
 
 // Volleyball middleware
 if (process.env.NODE_ENV !== "production") {
+  const volleyball = require("volleyball");
   app.use(volleyball);
 }
 
