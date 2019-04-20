@@ -1,13 +1,16 @@
-const express = require('express');
+const express = require("express");
 const api = express();
 
-const auth = require('./auth/auth');
+// Routes
+const auth = require("./auth/auth");
+const users = require("./user/users");
 
-api.use('/auth', auth);
+api.use("/auth", auth);
+api.use("/users", users);
 
-api.get('/', (req, res) => {
+api.get("/", (req, res) => {
   res.json({
-    url: '*/api'
+    url: "*/api"
   });
 });
 

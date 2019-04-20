@@ -1,5 +1,8 @@
 # sllingersys - web server
 
+## To do...
+
+Link to Trello...
 
 ## Response structure
 
@@ -32,3 +35,21 @@
   message: "Error"
 }
 ```
+
+## .env file structure
+
+**DB_NAME**: Name of the local database
+
+**DB_USERS**: Name of the collection of users
+
+**DB_CONFIG**: Name of the collection of configuration
+
+**CRYPT_ROUNDS**: Variable for bcrypt
+
+**TOKEN_SECRET_KEY**: JWT secret sign key
+
+**TOKEN_EXPIRES**: JWT expiration time
+
+**ROLE_USER**: Value for user role in DB
+
+**ROLE_ADMIN**: Value for admin role in DB

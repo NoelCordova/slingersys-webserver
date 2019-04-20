@@ -1,61 +1,86 @@
-const express = require('express');
-const { handleError } = require('../../services/utils');
-const { validateCredentials } = require('../../middlewares/validators');
-const User = require('../../models/User');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const express = require("express");
+const {
+  handleError,
+  encryptPassword,
+  comparePassword,
+  createJWT
+} = require("../../services/utils");
+const {
+  validateCredentialsSignup,
+  validateCredentialsLogin,
+  validateTokenSignup
+} = require("../../middlewares/validators");
+const User = require("../../models/User");
 const app = express();
 
-app.post('/signup', [validateCredentials], async (req, res) => {
-  const body = req.body;
+const fileSrc = "src/api/auth/auth.js";
 
-  const user = new User({
-    email: body.email,
-    password: bcrypt.hashSync(body.password, parseInt(process.env.CRYPT_ROUNDS))
-  });
-  
-  await user.save()
-    .then((userDb) => {
+app.post(
+  "/signup",
+  [validateTokenSignup, validateCredentialsSignup],
+  (req, res) => {
+    const body = req.body;
 
-      res.json({
-        ok: true,
-        message: 'Success',
-        data: userDb
-      });
+    const user = new User({
+      email: body.email,
+      username: body.username,
+      password: encryptPassword(body.password)
+    });
 
-    })
-    .catch((error) => handleError(res, 400, error.errmsg));
+    user
+      .save()
+      .then(() => {
+        res.json({
+          ok: true,
+          message: "Signup complete"
+        });
+      })
+      .catch(error => handleError(res, 400, error.errmsg, fileSrc, 33));
+  }
+);
 
-});
-
-app.post('/login', [validateCredentials], (req, res) => {
+app.post("/login", [validateCredentialsLogin], (req, res) => {
   const body = req.body;
 
   User.findOne({ email: body.email, active: true })
-    .then((userDb) => {
+    .select({ username: 1, role: 1, password: 1 })
+    .exec((error, userDb) => {
+      if (error) handleError(res, undefined, error, fileSrc, 42);
 
-      if (userDb === null) return handleError(res, 400, '[email] or password is incorrect');
-      if (!bcrypt.compareSync(body.password, userDb.password))
-        return handleError(res, 400, 'email o [password] is incorrect');
+      if (userDb === null)
+        return handleError(
+          res,
+          400,
+          "[email] or password is incorrect",
+          fileSrc,
+          45
+        );
+      if (!comparePassword(body.password, userDb.password))
+        return handleError(
+          res,
+          400,
+          "email o [password] is incorrect",
+          fileSrc,
+          53
+        );
+
+      console.log(userDb);
 
       const payload = {
-        email: userDb.email
+        username: userDb.username,
+        role: userDb.role
       };
 
-      const token = jwt.sign(payload, process.env.TOKEN_SECRET_KEY, { expiresIn: process.env.TOKEN_EXPIRES });
+      const token = createJWT(payload);
 
       res.json({
         ok: true,
-        message: 'Success',
+        message: "Success",
         data: {
           token
         }
       });
-
-    })
-    .catch((error) => handleError(res, undefined, error));
-
+    });
 });
-
 
 module.exports = app;
