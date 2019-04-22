@@ -1,0 +1,27 @@
+{
+  "version": 2,
+  "name": "slingersys-webserver",
+  "builds": [
+    {
+      "src": "src/index.js",
+      "use": "@now/node-server"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "src/index.js"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "@slingersys-webserver-node_env",
+    "DB_URI": "@slingersys-webserver-db_uri",
+    "DB_USERS": "@slingersys-webserver-db_users",
+    "DB_CONFIG": "@slingersys-webserver-db_config",
+    "CRYPT_ROUNDS": "@slingersys-webserver-crypt_rounds",
+    "TOKEN_SECRET_KEY": "@slingersys-webserver-token_secret_key",
+    "TOKEN_EXPIRES": "@slingersys-webserver-token_expires",
+    "ROLE_USER": "@slingersys-webserver-role_user",
+    "ROLE_ADMIN": "@slingersys-webserver-role_user"
+  }
+}
