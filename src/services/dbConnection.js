@@ -1,9 +1,8 @@
 const mongoose = require("mongoose");
-const { DB_URI } = require("../config");
+const { MONGO_URI } = require("../config");
+const options = {
+  useNewUrlParser: true,
+  useCreateIndex: true
+};
 
-module.exports = mongoose.connect(
-  DB_URI,
-  { useNewUrlParser: true, useCreateIndex: true },
-  error =>
-    error === null ? console.log("Database connected!") : console.error(error)
-);
+module.exports = mongoose.connect(MONGO_URI, options);
