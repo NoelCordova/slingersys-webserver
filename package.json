@@ -4,8 +4,10 @@
   "description": "Web server para proyecto personal",
   "main": "src/",
   "scripts": {
-    "start": "node src/",
-    "dev": "nodemon src/"
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "lint": "eslint src/**/.js",
+    "lint-fix": "eslint src/**/*.js --fix"
   },
   "engines": {
     "node": "10.15.1",
@@ -23,6 +25,10 @@
     "mongoose": "^5.4.17"
   },
   "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.2",
     "nodemon": "^1.18.10",
     "volleyball": "^1.5.1"
   }
