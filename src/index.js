@@ -1,22 +1,6 @@
-const { PORT } = require("./config");
-require("./services/dbConnection");
+const { PORT } = require('./config');
+const app = require('./app');
 
-const express = require("express");
-const routes = require("./routes");
-const bodyParser = require("body-parser");
-const app = express();
-
-// JSON parser
-app.use(bodyParser.json());
-
-// Volleyball middleware
-if (process.env.NODE_ENV !== "production") {
-  const volleyball = require("volleyball");
-  app.use(volleyball);
-}
-
-// Application routes
-app.use(routes);
-
-// Server starts
-app.listen(PORT, () => console.log("Server now running on port: ", PORT));
+// Run server
+// eslint-disable-next-line no-console
+app.listen(PORT, () => console.log('Server now running on port: ', PORT));

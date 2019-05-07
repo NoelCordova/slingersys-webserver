@@ -1,19 +1,11 @@
-const express = require("express");
-const api = require("./api");
-const routes = express();
+const { Router } = require('express');
 
-routes.use("/api", api);
+const auth = require('./api/auth/auth');
+const user = require('./api/user/users');
 
-routes.get("/", (req, res) => {
-  res.json({
-    url: "*/"
-  });
-});
+const router = Router();
 
-routes.all("/*", (req, res) => {
-  res.json({
-    url: "Ruta inválida"
-  });
-});
+router.use('/auth', auth);
+router.use('/users', user);
 
-module.exports = routes;
+module.exports = router;
