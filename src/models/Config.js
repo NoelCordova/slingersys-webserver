@@ -1,16 +1,18 @@
-const mongoose = require("mongoose");
-let Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const { DB_COLLECTION_CONFIG } = require('../config');
+
+const { Schema } = mongoose;
 
 // Schema options:
 // collection: name of the collection
 // versionKey: remove the _v propertie on the db
-let ConfigSchema = new Schema(
+const ConfigSchema = new Schema(
   {
     validSignupToken: {
-      type: String
-    }
+      type: String,
+    },
   },
-  { collection: process.env.DB_CONFIG, versionKey: false }
+  { collection: DB_COLLECTION_CONFIG, versionKey: false },
 );
 
-module.exports = mongoose.model("Config", ConfigSchema);
+module.exports = mongoose.model('Config', ConfigSchema);

@@ -1,37 +1,39 @@
-const mongoose = require("mongoose");
-let Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const { ROLE_USER, DB_COLLECTION_USERS } = require('../config');
+
+const { Schema } = mongoose;
 
 // Schema options:
 // collection: name of the collection
 // versionKey: remove the _v propertie on the db
-let UserSchema = new Schema(
+const UserSchema = new Schema(
   {
     email: {
       type: String,
       required: true,
-      unique: true
+      unique: true,
     },
     username: {
       type: String,
       required: true,
-      unique: true
+      unique: true,
     },
     password: {
       type: String,
-      required: true
+      required: true,
     },
     active: {
       type: Boolean,
       required: true,
-      default: true
+      default: true,
     },
     role: {
       type: String,
       required: true,
-      default: process.env.ROLE_USER
-    }
+      default: ROLE_USER,
+    },
   },
-  { collection: process.env.DB_USERS, versionKey: false }
+  { collection: DB_COLLECTION_USERS, versionKey: false },
 );
 
-module.exports = mongoose.model("User", UserSchema);
+module.exports = mongoose.model('User', UserSchema);
