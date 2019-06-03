@@ -5,7 +5,7 @@ const {
   validateTokenRole,
   validateUserInfoAsAdmin
 } = require("../../middlewares/validators");
-const User = require("../../models/User");
+const User = require("../../models/user.model");
 const app = express();
 
 const fileSrc = "src/api/user/users.js";

@@ -1,7 +1,7 @@
 const Joi = require('joi');
 const jwt = require('jsonwebtoken');
 const { handleError } = require('../services/utils');
-const Config = require('../models/Config');
+const Config = require('../models/config.model');
 
 const fileSrc = 'src/middlewares/validators.js';
 
@@ -34,6 +34,27 @@ const validateCredentialsSignup = (req, res, next) => {
     } else {
       next();
     }
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Function that validates the token in the database for signup permission
+ */
+const validateTokenSignup = async (req, res, next) => {
+  try {
+    const { body } = req;
+
+    const tokenDb = await Config.findOne({ validSignupToken: body.validSignupToken })
+      .exec();
+
+    if (tokenDb === null) {
+      res.status(400);
+      throw new Error('Not token registered on db, signup not complete');
+    }
+
+    next();
   } catch (error) {
     next(error);
   }
@@ -118,27 +139,6 @@ const validateUserInfoAsAdmin = (req, res, next) => {
         64
       );
   } else next();
-};
-
-/**
- * Function that validates the token in the database for signup permission
- */
-const validateTokenSignup = (req, res, next) => {
-  const body = req.body;
-
-  Config.findOne({ validSignupToken: body.validSignupToken })
-    .then(data =>
-      data === null
-        ? handleError(
-          res,
-          400,
-          'El token de inicio de sesión no es valido',
-          fileSrc,
-          83
-        )
-        : next()
-    )
-    .catch(error => handleError(res, undefined, error, fileSrc, 92));
 };
 
 /**
@@ -235,5 +235,5 @@ module.exports = {
   validateTokenSignup,
   validateTokenExpiration,
   validateTokenRole,
-  validateTokenIdentity
+  validateTokenIdentity,
 };

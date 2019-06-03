@@ -1,4 +1,4 @@
-const User = require('../../models/User');
+const User = require('../../models/user.model');
 const { comparePassword, createJWT, encryptPassword } = require('../../services/utils');
 
 async function signup(req, res, next) {
@@ -11,9 +11,17 @@ async function signup(req, res, next) {
       password: encryptPassword(body.password),
     });
 
-    user.save();
+    user.save()
+      .then(() => {
+        res.json({
+          ok: true,
+          message: 'Signup complete',
+        });
+      })
+      .catch((error) => {
+        next(error);
+      });
   } catch (error) {
-    console.log(error);
     next(error);
   }
 }
