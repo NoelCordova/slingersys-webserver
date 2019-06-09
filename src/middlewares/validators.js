@@ -2,6 +2,7 @@ const Joi = require('joi');
 const jwt = require('jsonwebtoken');
 const { handleError } = require('../services/utils');
 const Config = require('../models/config.model');
+const { ROLE_ADMIN, TOKEN_SECRET_KEY } = require('../config');
 
 const fileSrc = 'src/middlewares/validators.js';
 
@@ -145,54 +146,59 @@ const validateUserInfoAsAdmin = (req, res, next) => {
  * Function that validates the exp date of the session token
  */
 const validateTokenExpiration = (req, res, next) => {
-  const Authorization = req.get('Authorization');
+  try {
+    const Authorization = req.get('Authorization');
 
-  if (Authorization === undefined)
-    return handleError(
-      res,
-      401,
-      'No tienes autorización para acceder a esta ruta',
-      fileSrc,
-      103
-    );
+    if (Authorization === undefined) {
+      res.status(401);
+      throw new Error('You dont have the privilieges to access this route [no token]');
+    }
 
-  const token = Authorization.split(' ')[1];
+    const token = Authorization.split(' ')[1];
 
-  jwt.verify(token, process.env.TOKEN_SECRET_KEY, (error, payload) => {
-    error ? handleError(res, 401, error.name, fileSrc, 113) : next();
-  });
+    jwt.verify(token, TOKEN_SECRET_KEY, (error) => {
+      if (error) {
+        res.status(401);
+        throw new Error('You dont have the privilieges to access this route [bad token]');
+      } else {
+        next();
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 /**
  * Function that validates the admin role in the session token
  */
 const validateTokenRole = (req, res, next) => {
-  const Authorization = req.get('Authorization');
+  try {
+    const Authorization = req.get('Authorization');
 
-  if (Authorization === undefined)
-    return handleError(
-      res,
-      401,
-      'No tienes autorización para acceder a esta ruta',
-      fileSrc,
-      124
-    );
+    if (Authorization === undefined) {
+      res.status(401);
+      throw new Error('You dont have the privilieges to access this route [no token]');
+    }
 
-  const token = Authorization.split(' ')[1];
+    const token = Authorization.split(' ')[1];
 
-  jwt.verify(token, process.env.TOKEN_SECRET_KEY, (error, payload) => {
-    if (error) return handleError(res, 401, error.name);
+    jwt.verify(token, TOKEN_SECRET_KEY, (error, payload) => {
+      if (error) {
+        res.status(401);
+        throw new Error('You dont have the privilieges to access this route [bad token]');
+      }
 
-    payload.role !== process.env.ROLE_ADMIN
-      ? handleError(
-        res,
-        401,
-        'No tienes autorización para acceder a esta ruta: [role]',
-        fileSrc,
-        138
-      )
-      : next();
-  });
+      if (payload.role !== ROLE_ADMIN) {
+        res.status(401);
+        throw new Error('You dont have the privilieges to access this route [role]');
+      } else {
+        next();
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 /**

@@ -1,3 +1,5 @@
+const { NODE_ENV } = require('../config');
+
 // eslint-disable-next-line no-unused-vars
 function errorHandler(error, req, res, next) {
   const { message, stack } = error;
@@ -6,7 +8,7 @@ function errorHandler(error, req, res, next) {
   return res.status(status).json({
     message,
     status,
-    stack: process.env.NODE_ENV === 'production' ? '🤫' : stack,
+    stack: NODE_ENV === 'production' ? '🤫' : stack,
   });
 }
 
