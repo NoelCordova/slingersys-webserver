@@ -1,9 +1,9 @@
 const router = require('express').Router();
 const { getUser, updateUser, deleteUser } = require('./user.controller');
-const { validateTokenExpiration } = require('../../middlewares/validators');
+const { validateTokenRole } = require('../../middlewares/validators');
 
-router.get('/:username', [validateTokenExpiration, getUser]);
-router.put('/:username', [validateTokenExpiration, updateUser]);
-router.delete('/:username', [validateTokenExpiration, deleteUser]);
+router.get('/:username', [validateTokenRole, getUser]);
+router.put('/:username', [validateTokenRole, updateUser]);
+router.delete('/:username', [validateTokenRole, deleteUser]);
 
 module.exports = router;

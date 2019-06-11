@@ -14,9 +14,10 @@
     }
   ],
   "env": {
-    "DB_URI": "@slingersys-webserver-db_uri",
-    "DB_USERS": "@slingersys-webserver-db_users",
-    "DB_CONFIG": "@slingersys-webserver-db_config",
+    "NODE_ENV": "@slingersys-webserver-node_env_dev",
+    "MONGO_URI": "@slingersys-webserver-mongo_uri",
+    "DB_COLLECTION_USERS": "@slingersys-webserver-db_collection_users",
+    "DB_COLLECTION_CONFIG": "@slingersys-webserver-db_collection_config",
     "CRYPT_ROUNDS": "@slingersys-webserver-crypt_rounds",
     "TOKEN_SECRET_KEY": "@slingersys-webserver-token_secret_key",
     "TOKEN_EXPIRES": "@slingersys-webserver-token_expires",
