@@ -22,6 +22,6 @@
     "TOKEN_SECRET_KEY": "@slingersys-webserver-token_secret_key",
     "TOKEN_EXPIRES": "@slingersys-webserver-token_expires",
     "ROLE_USER": "@slingersys-webserver-role_user",
-    "ROLE_ADMIN": "@slingersys-webserver-role_user"
+    "ROLE_ADMIN": "@slingersys-webserver-role_admin"
   }
 }
