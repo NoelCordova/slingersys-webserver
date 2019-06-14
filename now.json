@@ -1,6 +1,7 @@
 {
   "version": 2,
   "name": "slingersys-webserver",
+  "alias": "api-slingersys.now.sh",
   "builds": [
     {
       "src": "src/index.js",
@@ -15,13 +16,13 @@
   ],
   "env": {
     "NODE_ENV": "@slingersys-webserver-node_env_prod",
-    "MONGO_URI": "@slingersys-webserver-mongo_uri",
+    "MONGO_URI": "@slingersys-webserver-mongo_uri_prod",
     "DB_COLLECTION_USERS": "@slingersys-webserver-db_collection_users",
     "DB_COLLECTION_CONFIG": "@slingersys-webserver-db_collection_config",
     "CRYPT_ROUNDS": "@slingersys-webserver-crypt_rounds",
     "TOKEN_SECRET_KEY": "@slingersys-webserver-token_secret_key",
     "TOKEN_EXPIRES": "@slingersys-webserver-token_expires",
     "ROLE_USER": "@slingersys-webserver-role_user",
-    "ROLE_ADMIN": "@slingersys-webserver-role_user"
+    "ROLE_ADMIN": "@slingersys-webserver-role_admin"
   }
 }
