@@ -15,13 +15,14 @@ const schema = Joi.object({
   TOKEN_EXPIRES: Joi.string().default('1h'),
   ROLE_USER: Joi.string().default('user'),
   ROLE_ADMIN: Joi.string().default('admin'),
+  VALID_SIGNUP_TOKEN: Joi.string().required(),
 }).unknown(true);
 
 const { error, value: config } = Joi.validate(process.env, schema);
 
 if (error) {
   // eslint-disable-next-line no-console
-  console.log(error.message);
+  console.error(error.message);
   process.exit(1);
 }
 
