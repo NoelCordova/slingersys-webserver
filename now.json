@@ -1,6 +1,7 @@
 {
   "version": 2,
   "name": "slingersys-webserver",
+  "alias": "api-slingersys.now.sh",
   "builds": [
     {
       "src": "src/index.js",
