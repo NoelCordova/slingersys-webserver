@@ -11,16 +11,21 @@ async function signup(req, res, next) {
       password: encryptPassword(body.password),
     });
 
-    user.save()
-      .then(() => {
-        res.json({
-          ok: true,
-          message: 'Signup complete',
-        });
-      })
-      .catch((error) => {
-        next(error);
-      });
+    const userDb = await User.create(user);
+
+    if (userDb === null) {
+      res.status(400);
+      throw new Error('Error on get new user data');
+    }
+
+    res.json({
+      ok: true,
+      message: 'Signup complete',
+      data: {
+        email: userDb.email,
+        username: userDb.username,
+      },
+    });
   } catch (error) {
     next(error);
   }

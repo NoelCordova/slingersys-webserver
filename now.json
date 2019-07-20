@@ -14,8 +14,8 @@
     }
   ],
   "env": {
-    "NODE_ENV": "@slingersys-webserver-node_env_prod",
-    "MONGO_URI": "@slingersys-webserver-mongo_uri_prod",
+    "NODE_ENV": "@slingersys-webserver-node_env_dev",
+    "MONGO_URI": "@slingersys-webserver-mongo_uri_staging",
     "DB_COLLECTION_USERS": "@slingersys-webserver-db_collection_users",
     "DB_COLLECTION_CONFIG": "@slingersys-webserver-db_collection_config",
     "CRYPT_ROUNDS": "@slingersys-webserver-crypt_rounds",
